@@ -1,49 +1,87 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_time_tracker/app/sign_in/sign_in_page.dart';
+import 'package:flutter_time_tracker/services/auth.dart';
 
 import 'home_page.dart';
 
-class LandingPage extends StatefulWidget {
-  @override
-  _LandingPageState createState() => _LandingPageState();
-}
+class LandingPage extends StatelessWidget {
+  final AuthBase auth;
 
-class _LandingPageState extends State<LandingPage> {
-  User? _user;
-
-  Future<void> _checkCurrentUser() async {
-    try {
-      Firebase.initializeApp().whenComplete(() async {
-        User? user = await FirebaseAuth.instance.currentUser;
-        _updateUser(user);
-      });
-    } catch (err) {
-      print(err);
-    }
-  }
-
-  @override
-  void initState() {
-    _checkCurrentUser();
-    super.initState();
-  }
-
-  void _updateUser(User? user) {
-    setState(() {
-      _user = user;
-    });
-  }
+  LandingPage({required this.auth});
 
   @override
   Widget build(BuildContext context) {
-    if (_user == null) {
-      return SignInPage(onSignIn: _updateUser);
-    }
+    // Stream<CustomUser?> customUserStream =
+    //     StreamController<CustomUser?>().stream;
+    // widget.auth.onAuthStateChanged.then((stream) => customUserStream = stream);
 
-    return HomePage(
-      onSignOut: () => _updateUser(null),
+    return StreamBuilder<CustomUser?>(
+      stream: auth.onAuthStateChanged,
+      // initialData: null,
+      builder: (context, snapshot) {
+        print('StreamBuilder:');
+        print(snapshot.connectionState);
+
+        if (snapshot.connectionState == ConnectionState.active) {
+          CustomUser? user = snapshot.data;
+          print('snapshot.hasData:');
+          if (user == null) {
+            return SignInPage(
+              auth: auth,
+              // onSignIn: _updateUser,
+            );
+          }
+
+          return HomePage(
+            auth: auth,
+            // onSignOut: () => _updateUser(null),
+          );
+        } else {
+          // return SignInPage(
+          //   auth: auth,
+          //   // onSignIn: _updateUser,
+          // );
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+      },
     );
   }
+// Stream<CustomUser?> customUserStream = StreamController<CustomUser?>().stream;
+//
+// Future<void> _checkCurrentUser() async {
+//   try {
+//     CustomUser? user = await widget.auth.currentUser();
+//     _updateUser(user);
+//   } catch (err) {
+//     print(err);
+//   }
+// }
+
+//
+// Future<void> _checkOnAuthStateChanged() async {
+//   customUserStream = await widget.auth.onAuthStateChanged;
+//   await _checkCurrentUser();
+// }
+
+//
+// @override
+// void initState() {
+//   print('initState()');
+//   _checkOnAuthStateChanged();
+//
+//   // customUserStream.listen((user) {
+//   //   print('customUserStream: Status changed: user ${user?.uid}');
+//   // });
+//   super.initState();
+// }
+//
+// void _updateUser(CustomUser? user) {
+//   setState(() {
+//     _user = user;
+//   });
+// }
 }

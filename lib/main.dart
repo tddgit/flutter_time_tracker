@@ -1,9 +1,44 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_time_tracker/services/auth.dart';
 
 import 'app/landing_page.dart';
 
-void main() {
+//
+// void addLessThanFive(StreamController controller, int value) {
+//   if (value < 5) {
+//     controller.sink.add(value);
+//   } else {
+//     controller.sink.addError(StateError('$value is not less than 5'));
+//   }
+// }
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
+
+  // final controller = StreamController();
+  // controller.sink.add(1);
+  // controller.sink.add(2);
+  //
+  // controller.stream.listen((value) {
+  //   print(value);
+  // });
+  //
+  // addLessThanFive(controller, 1);
+  // addLessThanFive(controller, 2);
+  // addLessThanFive(controller, 5);
+  // addLessThanFive(controller, 6);
+  // addLessThanFive(controller, 7);
+  //
+  // controller.close();
+  //
+  // controller.stream.listen((value) => print(value), onError: (err) {
+  //   print(err);
+  // }, onDone: () {
+  //   print('done');
+  // });
 }
 
 class MyApp extends StatelessWidget {
@@ -14,7 +49,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
-      home: LandingPage(),
+      home: LandingPage(
+        auth: Auth(),
+      ),
     );
   }
 }

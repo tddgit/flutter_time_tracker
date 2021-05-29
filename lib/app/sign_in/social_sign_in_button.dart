@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_time_tracker/common_widgets/common_raised_button.dart';
 
-class SocialSignInButton extends CommonRaisedButton {
+class SocialSignInButton extends CustomRaisedButton {
   SocialSignInButton({
     required String assetName,
     required String text,

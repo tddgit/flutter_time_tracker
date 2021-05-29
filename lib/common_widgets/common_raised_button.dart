@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class CommonRaisedButton extends StatelessWidget {
+class CustomRaisedButton extends StatelessWidget {
   final Widget child;
   final Color color;
   final double borderRadius;
   final double height;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
-  CommonRaisedButton({
+  CustomRaisedButton({
     required this.child,
     required this.color,
     this.borderRadius: 2.0,
