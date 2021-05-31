@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class CustomRaisedButton extends StatelessWidget {
@@ -7,18 +8,19 @@ class CustomRaisedButton extends StatelessWidget {
   final double height;
   final VoidCallback? onPressed;
 
-  CustomRaisedButton({
+  const CustomRaisedButton({
     required this.child,
     required this.color,
-    this.borderRadius: 2.0,
-    this.height: 50.0,
     required this.onPressed,
-  }) : assert(borderRadius != null);
+    this.borderRadius = 2,
+    this.height = 50,
+  });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 50.0,
+      // ignore: deprecated_member_use
       child: RaisedButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
@@ -30,5 +32,15 @@ class CustomRaisedButton extends StatelessWidget {
         child: child,
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(ColorProperty('color', color))
+      ..add(DoubleProperty('borderRadius', borderRadius))
+      ..add(DoubleProperty('height', height))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onPressed', onPressed));
   }
 }

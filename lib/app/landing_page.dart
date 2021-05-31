@@ -1,13 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_time_tracker/app/home_page.dart';
 import 'package:flutter_time_tracker/app/sign_in/sign_in_page.dart';
 import 'package:flutter_time_tracker/services/auth.dart';
-
-import 'home_page.dart';
 
 class LandingPage extends StatelessWidget {
   final AuthBase auth;
 
-  LandingPage({required this.auth});
+  const LandingPage({required this.auth});
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +18,12 @@ class LandingPage extends StatelessWidget {
     return StreamBuilder<CustomUser?>(
       stream: auth.onAuthStateChanged,
       // initialData: null,
-      builder: (context, snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<CustomUser?> snapshot) {
         print('StreamBuilder:');
         print(snapshot.connectionState);
 
         if (snapshot.connectionState == ConnectionState.active) {
-          CustomUser? user = snapshot.data;
+          final CustomUser? user = snapshot.data;
           print('snapshot.hasData:');
           if (user == null) {
             return SignInPage(
@@ -41,7 +41,7 @@ class LandingPage extends StatelessWidget {
           //   auth: auth,
           //   // onSignIn: _updateUser,
           // );
-          return Scaffold(
+          return const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),
@@ -49,6 +49,12 @@ class LandingPage extends StatelessWidget {
         }
       },
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<AuthBase>('auth', auth));
   }
 // Stream<CustomUser?> customUserStream = StreamController<CustomUser?>().stream;
 //

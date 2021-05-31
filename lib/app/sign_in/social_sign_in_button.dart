@@ -8,20 +8,18 @@ class SocialSignInButton extends CustomRaisedButton {
     required Color color,
     required Color textColor,
     required VoidCallback onPressed,
-  })  : assert(assetName != null),
-        assert(text != null),
-        super(
+  }) : super(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
+            children: <Widget>[
               Image.asset(assetName),
               Text(text,
                   style: TextStyle(
                     color: textColor,
-                    fontSize: 15.0,
+                    fontSize: 15,
                   )),
               Opacity(
-                opacity: 0.0,
+                opacity: 0,
                 child: Image.asset(assetName),
               ),
             ],

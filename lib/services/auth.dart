@@ -29,14 +29,15 @@ abstract class AuthBase {
 }
 
 class Auth implements AuthBase {
-  final _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  _initializeFirebaseApp() async {
+  Future<void> _initializeFirebaseApp() async {
     try {
       // Firebase.initializeApp().whenComplete(() async {
       //   user = _firebaseAuth.currentUser;
       // });
       await Firebase.initializeApp();
+      // ignore: avoid_catches_without_on_clauses
     } catch (err) {
       print("Error init FirebaseApp $err");
     }
@@ -55,15 +56,16 @@ class Auth implements AuthBase {
     return FirebaseAuth.instance.authStateChanges().map(_userFromFirebase);
   }
 
+  @override
   Future<CustomUser?> googleSignIn() async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
     try {
-      GoogleSignInAccount? googleAccount = await googleSignIn.signIn();
+      final GoogleSignInAccount? googleAccount = await googleSignIn.signIn();
       if (googleAccount != null) {
-        GoogleSignInAuthentication googleAuth =
+        final GoogleSignInAuthentication googleAuth =
             await googleAccount.authentication;
         if (googleAuth.accessToken != null && googleAuth.idToken != null) {
-          final authResult = await _firebaseAuth
+          final UserCredential authResult = await _firebaseAuth
               .signInWithCredential(GoogleAuthProvider.credential(
             idToken: googleAuth.idToken,
             accessToken: googleAuth.accessToken,
@@ -81,6 +83,7 @@ class Auth implements AuthBase {
           message: 'Sign in aborted by user',
         );
       }
+      // ignore: avoid_catches_without_on_clauses
     } catch (error) {
       print(error);
     }
@@ -89,7 +92,8 @@ class Auth implements AuthBase {
   @override
   Future<CustomUser?> signInWithEmailAndPassword(
       String email, String password) async {
-    final authResult = await _firebaseAuth.signInWithEmailAndPassword(
+    final UserCredential authResult =
+        await _firebaseAuth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
@@ -99,7 +103,8 @@ class Auth implements AuthBase {
   @override
   Future<CustomUser?> createUserWithEmailAndPassword(
       String email, String password) async {
-    final authResult = await _firebaseAuth.createUserWithEmailAndPassword(
+    final UserCredential authResult =
+        await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
@@ -116,6 +121,7 @@ class Auth implements AuthBase {
       // });
       await Firebase.initializeApp();
       user = FirebaseAuth.instance.currentUser;
+      // ignore: avoid_catches_without_on_clauses
     } catch (err) {
       print("currentUser() $err");
     }
@@ -132,6 +138,7 @@ class Auth implements AuthBase {
       // });
       await Firebase.initializeApp();
       authResult = await FirebaseAuth.instance.signInAnonymously();
+      // ignore: avoid_catches_without_on_clauses
     } catch (err) {
       print('signInAnonymously(): $err');
     }
@@ -140,7 +147,7 @@ class Auth implements AuthBase {
 
   @override
   Future<void> signOut() async {
-    final googleSignIn = GoogleSignIn();
+    final GoogleSignIn googleSignIn = GoogleSignIn();
     await googleSignIn.signOut();
     print('signOut()');
     try {
@@ -149,6 +156,7 @@ class Auth implements AuthBase {
       // });
 
       await FirebaseAuth.instance.signOut();
+      // ignore: avoid_catches_without_on_clauses
     } catch (err) {
       print('signOut(): $err');
     }

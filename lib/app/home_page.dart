@@ -6,7 +6,7 @@ class HomePage extends StatelessWidget {
 
   // final VoidCallback onSignOut;
 
-  HomePage({
+  const HomePage({
     required this.auth,
   });
 
@@ -14,6 +14,7 @@ class HomePage extends StatelessWidget {
     try {
       await auth.signOut();
       // onSignOut();
+      // ignore: avoid_catches_without_on_clauses
     } catch (err) {
       print(err);
     }
@@ -23,18 +24,18 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Page'),
+        title: const Text('Home Page'),
         actions: <Widget>[
           FlatButton(
-            child: Text(
+            onPressed: _signOut,
+            child: const Text(
               'Logout',
               style: TextStyle(
-                fontSize: 18.0,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
-            onPressed: _signOut,
           ),
         ],
       ),
