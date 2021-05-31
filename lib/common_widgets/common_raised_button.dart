@@ -19,7 +19,7 @@ class CustomRaisedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50.0,
+      height: 50,
       // ignore: deprecated_member_use
       child: RaisedButton(
         shape: RoundedRectangleBorder(
