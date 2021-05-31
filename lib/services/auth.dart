@@ -31,18 +31,6 @@ abstract class AuthBase {
 class Auth implements AuthBase {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Future<void> _initializeFirebaseApp() async {
-    try {
-      // Firebase.initializeApp().whenComplete(() async {
-      //   user = _firebaseAuth.currentUser;
-      // });
-      await Firebase.initializeApp();
-      // ignore: avoid_catches_without_on_clauses
-    } catch (err) {
-      print("Error init FirebaseApp $err");
-    }
-  }
-
   CustomUser? _userFromFirebase(User? user) {
     print('_userFromFirebase(User? user)');
     if (user == null) {
