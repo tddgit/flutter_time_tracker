@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_time_tracker/app/landing_page.dart';
 import 'package:flutter_time_tracker/services/auth.dart';
-
-import 'app/landing_page.dart';
 
 //
 // void addLessThanFive(StreamController controller, int value) {
